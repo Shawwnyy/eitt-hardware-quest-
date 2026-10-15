@@ -14,7 +14,7 @@ Application 100 % statique : HTML5, CSS3, JavaScript « vanilla » et SVG. Aucun
 | **Accueil** | Présentation, durée indicative, raccourcis, compétences visées |
 | **Explorer** | Vue éclatée SVG d'un PC (10 composants cliquables), liste avec recherche et filtre par catégorie, fiche résumée, précédent/suivant, indicateur « consulté » |
 | **Apprendre** | Fiches détaillées : rôle, explication simple, fonctionnement, exemple, importance, confusions fréquentes, anecdote |
-| **Quiz** | **40 QCM sur 4 niveaux** (Débutant, Intermédiaire, Avancé, Expert) + un **défi éclair Vrai/Faux** (10 affirmations tirées au hasard parmi 16). Correction et explication immédiates, encouragements à chaque réponse, série de bonnes réponses, barre de progression, score, récapitulatif des erreurs, redémarrage, questions et réponses mélangées |
+| **Quiz** | 30 questions (3 niveaux × 10), choix multiples, correction et explication immédiates, barre de progression, score, récapitulatif des erreurs, redémarrage, questions et réponses mélangées |
 | **Assembler** | Carte mère schématique fictive, 7 éléments à placer étape par étape (clic sur l'élément puis sur l'emplacement), retour immédiat et explications |
 | **Diagnostic** | 5 pannes fictives : symptômes, hypothèses, choix d'une démarche, causes possibles, correction pédagogique, rappels de sécurité |
 | **Progression** | Composants découverts, quiz terminés, dernier score, exercices réussis, pourcentage, récompenses |
@@ -33,7 +33,7 @@ eitt-hardware-quest/
 │   └── lab-svg.js       Illustrations SVG (vue éclatée, carte mère schématique, icônes)
 ├── data/
 │   ├── components.js    Catégories et fiches des 10 composants
-│   ├── quiz.js          4 niveaux de QCM (40 questions) + défi éclair Vrai/Faux (16 affirmations)
+│   ├── quiz.js          Niveaux et 30 questions
 │   └── exercises.js     Exercice d'assemblage et scénarios de diagnostic
 └── README.md
 ```
@@ -72,19 +72,10 @@ Si l'image de l'en-tête est introuvable, un emplacement neutre « LOGO EITT » 
 
 La palette suit celle du logo : **cyan EITT `#16DDF3`** sur fond noir bleuté (`#050a14`). Les couleurs sont regroupées en variables CSS au début de `css/style.css` (`--neon`, `--bg`, `--panel`…).
 
-## Ambiance, animations et coach
-
-- **PC posé sur une table éclairée** (page d'accueil) : une scène en HTML/CSS/SVG pur — table en bois, écran qui affiche le schéma du PC, tour avec ventilateurs, clavier, souris, mug, lampe de bureau avec son cône de lumière. La lumière bleue de l'écran **déborde** de la scène (halo plus grand que l'illustration) et « respire » doucement ; une fine ligne de balayage parcourt l'écran.
-- **Entrée dans le laboratoire** : un clic sur « Entrer dans le laboratoire » zoome sur l'écran, déclenche un éclair bleu, puis la page s'ouvre avec un fondu lumineux. Les bords de l'écran s'illuminent en bleu à chaque changement de page, et les pièces du schéma apparaissent les unes après les autres.
-- **Coach (pop-up non bloquant)** : une petite carte au coin de l'écran félicite et encourage — bienvenue dans le laboratoire, 1ᵉʳ, 3ᵉ, 5ᵉ et dernier composant découvert, première pièce assemblée, PC assemblé, scénario de diagnostic réussi, fin de chaque quiz (message différent selon le score : « Sans faute, bravo ! », « Excellent travail ! », « Bon début, continuez ! », « Ne lâchez rien, vous allez y arriver ! »), récompenses et paliers de progression (25, 50, 75, 100 %). Elle se ferme avec × ou « Plus tard », disparaît seule après quelques secondes, ne bloque jamais la page, et propose parfois une action (« Passer au niveau 2 », « Réviser les fiches »). Les messages de bienvenue et de premières fois ne s'affichent qu'**une seule fois** (mémorisé localement, clé `eitt-hardware-quest:coach:v1`).
-- **Confettis** légers (éléments CSS, aucune bibliothèque) pour les vraies réussites.
-- **Accessibilité** : avec « Réduire les animations » activé dans le système, le flash d'entrée, le halo animé, les confettis et les mouvements sont supprimés ; la navigation est immédiate. Le coach est un `role="dialog"` non modal annoncé poliment aux lecteurs d'écran ; les halos sont décoratifs (`aria-hidden`, sans capture de clic).
-- **Personnaliser** : couleurs de la lumière dans les variables CSS (`--neon`) ; textes des encouragements dans `js/app.js` (fonctions `coach`, `celebrateQuiz`, `markDiscovered`) ; scène dans `sceneMarkup()` et les classes `.ds-*` de `css/style.css`.
-
 ## Modifier ou compléter le contenu
 
 - **Fiches** : `data/components.js` (un objet par composant ; `categorie` doit correspondre à une catégorie de la liste).
-- **Quiz** : `data/quiz.js` — `reponse` est l'index (à partir de 0) de la bonne option ; ajoutez des questions en respectant le champ `niveau` (1, 2, 3, 4 ou `"eclair"`). Un niveau déclaré avec `bonus: true` ne compte pas dans le pourcentage global ; `vf: true` active la présentation Vrai/Faux (ordre des réponses fixe) et `tirage: N` tire N questions au hasard.
+- **Quiz** : `data/quiz.js` — `reponse` est l'index (à partir de 0) de la bonne option ; ajoutez des questions en respectant le champ `niveau` (1, 2 ou 3).
 - **Assemblage et diagnostic** : `data/exercises.js`. Pour le diagnostic, chaque démarche a un `verdict` : `bon`, `moyen` ou `mauvais`.
 - **Ajouter un composant au schéma** : ajoutez la fiche dans `components.js`, puis son dessin dans `js/lab-svg.js` (fonction `lab`) et une icône dans `ICON_PATHS`.
 
@@ -92,7 +83,7 @@ La palette suit celle du logo : **cyan EITT `#16DDF3`** sur fond noir bleuté (`
 
 La progression est enregistrée **uniquement sur l'appareil**, dans le stockage local du navigateur (`localStorage`, clé `eitt-hardware-quest:v1`). Aucune donnée n'est envoyée sur Internet ; aucun compte n'est nécessaire. Elle peut être perdue si l'utilisateur efface les données du navigateur ou utilise la navigation privée. Si le navigateur refuse tout stockage, l'application reste utilisable et l'indique sur la page « Progression ».
 
-**Pourcentage global** = moyenne à poids égal (25 % chacun) de : fiches consultées (sur 10), niveaux de quiz notés terminés (sur 4 ; le défi éclair est un bonus et ne compte pas), éléments d'assemblage placés (sur 7), scénarios de diagnostic résolus (sur 5).
+**Pourcentage global** = moyenne à poids égal (25 % chacun) de : fiches consultées (sur 10), niveaux de quiz terminés (sur 3), éléments d'assemblage placés (sur 7), scénarios de diagnostic résolus (sur 5).
 
 | Récompense | Critère |
 | --- | --- |
@@ -113,9 +104,9 @@ Le score et les récompenses sont des repères personnels, pas une certification
 
 ## Tests réalisés
 
-Un script de test automatisé (Playwright, Chromium) a été exécuté sur les fichiers ouverts en `file://` : **172 vérifications réussies sur 172**, sans erreur dans la console. Il couvre : l'accueil, la sélection des 10 composants (souris et clavier), les fiches, la recherche et le filtre, les quatre niveaux du quiz et le défi éclair Vrai/Faux (score, erreurs, récapitulatif, redémarrage, tirage de 10 affirmations différentes), la scène lumineuse de l'accueil (halo qui dépasse de l'écran, clics non bloqués), le flash d'entrée, le coach (bienvenue affichée une seule fois, encouragement après un mauvais score, pop-up non bloquant), tout le parcours d'assemblage (mauvais emplacement, ordre, fin), les 5 scénarios de diagnostic, la progression (persistance après rechargement, effacement), les routes inconnues, l'affichage mobile (375 et 390 px, absence de débordement horizontal, panneau de fiche) et la réduction des animations (entrée immédiate, ni flash ni confettis).
+Un script de test automatisé (Playwright, Chromium) a été exécuté sur les fichiers ouverts en `file://` : **129 vérifications réussies sur 129**, sans erreur dans la console. Il couvre : l'accueil, la sélection des 10 composants (souris et clavier), les fiches, la recherche et le filtre, les trois niveaux du quiz (score, erreurs, récapitulatif, redémarrage), tout le parcours d'assemblage (mauvais emplacement, ordre, fin), les 5 scénarios de diagnostic, la progression (persistance après rechargement, effacement), les routes inconnues, l'affichage mobile (375 px, absence de débordement horizontal, panneau de fiche) et la réduction des animations.
 
-**Non testé :** Firefox et Safari (le code n'utilise que des fonctions CSS/JS standard, mais le rendu des halos lumineux — `mix-blend-mode`, `filter: blur` — peut y varier légèrement), vrais appareils tactiles, téléphones anciens (performances des animations), lecteurs d'écran (NVDA, VoiceOver…). Un test manuel sur ces environnements est recommandé avant une diffusion large.
+**Non testé :** Firefox et Safari (le code n'utilise que des fonctions standard, mais aucun test n'y a été fait), vrais appareils tactiles, lecteurs d'écran (NVDA, VoiceOver…). Un test manuel sur ces environnements est recommandé avant une diffusion large.
 
 ## Limites de ce MVP
 
