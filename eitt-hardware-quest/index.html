@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EITT Hardware Quest — Le laboratoire interactif des composants informatiques</title>
+  <meta name="description" content="EITT Hardware Quest : explorez les composants d'un ordinateur, comprenez leur rôle, testez vos connaissances et entraînez-vous à l'assemblage. Un outil pédagogique du projet EITT — Enseignement Informatique pour Toutes et Tous.">
+  <meta name="theme-color" content="#050a14">
+  <link rel="icon" type="image/png" href="assets/logo/eitt-mark-64.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu principal</a>
+
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="brand" href="#/accueil" aria-label="EITT Hardware Quest — retour à l'accueil">
+        <!-- Logo EITT : chargé depuis data-logo-src ; si l'image est introuvable, l'emplacement neutre « LOGO EITT » reste affiché. -->
+        <span class="logo-slot" id="logo-slot" data-logo-src="assets/logo/eitt-mark.png" aria-hidden="true"><span class="logo-fallback">LOGO<br>EITT</span></span>
+        <span class="brand-text">
+          <strong>EITT Hardware Quest</strong>
+          <span>EITT — Enseignement Informatique pour Toutes et Tous</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span>Menu</span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="#/accueil" data-route="accueil">Accueil</a></li>
+          <li><a href="#/explorer" data-route="explorer">Explorer</a></li>
+          <li><a href="#/apprendre" data-route="apprendre">Apprendre</a></li>
+          <li><a href="#/quiz" data-route="quiz">Quiz</a></li>
+          <li><a href="#/assembler" data-route="assembler">Assembler</a></li>
+          <li><a href="#/diagnostic" data-route="diagnostic">Diagnostic</a></li>
+          <li><a href="#/progression" data-route="progression">Progression</a></li>
+        </ul>
+      </nav>
+
+      <a class="progress-chip" id="header-progress" href="#/progression">Progression : 0 %</a>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <noscript>
+      <p class="noscript container">EITT Hardware Quest a besoin de JavaScript pour fonctionner. Merci de l'activer dans votre navigateur.</p>
+    </noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <img class="footer-logo" src="assets/logo/eitt-logo.png" alt="Logo EITT" width="154" height="56">
+      <p><strong>EITT — Enseignement Informatique pour Toutes et Tous</strong></p>
+      <p>Outil pédagogique : les explications sont volontairement simplifiées et ne remplacent pas la documentation des fabricants. Les scores et récompenses sont des repères personnels pour apprendre, pas une certification officielle.</p>
+      <p>Votre progression est enregistrée uniquement sur cet appareil, dans le stockage local de votre navigateur. Aucun compte n'est nécessaire, et elle peut être perdue si ce stockage est effacé.</p>
+    </div>
+  </footer>
+
+  <div id="sr-status" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
+
+  <script src="data/components.js"></script>
+  <script src="data/quiz.js"></script>
+  <script src="data/exercises.js"></script>
+  <script src="js/lab-svg.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
